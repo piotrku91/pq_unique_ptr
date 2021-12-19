@@ -23,8 +23,8 @@ public:
     unique_ptr& operator=(const unique_ptr& second) = delete;
 
     // move constructor and move operator implementation
-    unique_ptr(const unique_ptr&& second) noexcept { ptr_ = second->release(); }
-    unique_ptr& operator=(const unique_ptr&& second) noexcept {
+    unique_ptr(unique_ptr&& second) noexcept { ptr_ = second->release(); }
+    unique_ptr& operator=(unique_ptr&& second) noexcept {
         ptr_ = second->release();
         return *this;
     };
@@ -32,7 +32,7 @@ public:
     // functions
     T* release() {
         T* ptrKeeper = ptr_; // keep pointer to return from function
-        delete ptr_;
+        ptr_ = nullptr;
         return ptrKeeper;
     }
 
@@ -45,7 +45,7 @@ public:
 
     void reset(unique_ptr&& second) noexcept {
         delete ptr_;
-        ptr = second.release();
+        ptr_ = second.release();
     }
 
     // operators overloading
