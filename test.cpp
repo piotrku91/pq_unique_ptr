@@ -3,6 +3,7 @@
 #include "pq_unique_ptr.hpp"
 #include <type_traits>
 #include <memory>
+#include <vector>
 
 static constexpr auto TestVariable=55; 
 
@@ -60,9 +61,13 @@ TEST_F(MainOperations, ShouldResetPointerAndCreateNewPointerWithNewValueByNewOpe
 TEST_F(MainOperations, ShouldResetPointerAndMovePointerFromSecondSmartPointer) 
 {
     auto SecondSmartPointer = pq::unique_ptr<int>(new int(TestVariable+100));
-    TestSmartPtr.reset(std::move(SecondSmartPointer));
+    TestSmartPtr=std::move(SecondSmartPointer);
     ASSERT_EQ(*TestSmartPtr,155);
+    ASSERT_EQ(SecondSmartPointer.get(),nullptr);
 }
+
+    
+
 
 
 

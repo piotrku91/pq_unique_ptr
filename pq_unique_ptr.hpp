@@ -2,7 +2,6 @@
 namespace pq {
 
 template <typename T>
-
 class unique_ptr {
 private:
     T* ptr_;
@@ -23,20 +22,20 @@ public:
     unique_ptr& operator=(const unique_ptr& second) = delete;
 
     // move constructor and move operator implementation
-    unique_ptr(unique_ptr&& second) noexcept { ptr_ = second->release(); }
+    unique_ptr(unique_ptr&& second) noexcept { ptr_ = second.release(); }
     unique_ptr& operator=(unique_ptr&& second) noexcept {
-        ptr_ = second->release();
+        ptr_ = second.release();
         return *this;
     };
 
     // functions
     T* release() {
-        T* ptrKeeper = ptr_; // keep pointer to return from function
+        T* ptrKeeper = get();  // keep pointer to return from function
         ptr_ = nullptr;
         return ptrKeeper;
     }
 
-    T* get() noexcept { return ptr_; }; //access to raw pointer
+    T* get() noexcept { return ptr_; };  //access to raw pointer
 
     void reset(T* second) noexcept {
         delete ptr_;
@@ -49,7 +48,7 @@ public:
     }
 
     // operators overloading
-    const T& operator*() noexcept { return *get(); };
+    T& operator*() noexcept { return *get(); };
     T* operator->() const noexcept { return get(); };
 };
 
